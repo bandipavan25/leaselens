@@ -139,6 +139,13 @@ app.post("/api/leases/:id/ask", async (req, res, next) => {
   }
 });
 
+// Serve the built React app in production (Cloud Run)
+const clientDist = path.join(__dirname, "..", "..", "client", "dist");
+app.use(express.static(clientDist));
+app.get(/^\/(?!api).*/, (_req, res) => {
+  res.sendFile(path.join(clientDist, "index.html"));
+});
+
 app.use((error, _req, res, _next) => {
   if (error instanceof multer.MulterError) {
     const message =
@@ -169,6 +176,6 @@ app.use((error, _req, res, _next) => {
   });
 });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`LeaseLens API on http://localhost:${port}`);
 });

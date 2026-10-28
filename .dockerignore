@@ -1,0 +1,6 @@
+**/node_modules
+.env
+**/.env
+.git
+client/dist
+server/data/leases.json
